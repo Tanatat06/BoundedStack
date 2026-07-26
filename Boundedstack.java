@@ -1,4 +1,9 @@
 import java.util.*;
+import java.util.ArrayList;
+//import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
 /**
  * BoundedStack คือ ADTแทนชั้นหนังสือที่บรรณารักษ์ใช้บันทึกการยืมและคืนหนังสือ
  * 
@@ -7,7 +12,6 @@ public class Boundedstack {
     //public static final int MAX_BOOKS = 200; 
     private final List<String> books; // private final String book ;
     private final int capacity;
-    private final int size;
     //Abstraction Function:
     //Af(books)- ชั้นหนังสือที่จัดเก็บหนังสือ "A100","A101"...
     
@@ -17,10 +21,13 @@ public class Boundedstack {
     //-ไม่มีชื่อหนังสือที่เป็นสตริงว่าง
     //-รหัสหนังสือไม่ซ้ำกัน
     //-มีหนังสือไม่เกินขนาดที่กำหนด
-    //-
+    
+    /**
+     * เขียนcheckRep()เพื่อให้ตรงตามเงื่อนไขRI
+     * โดยแปลงRiเป็นassert
+     */
     private void checkRep() {
-        assert books != null : "song is not null";
-        //assert books.size()<=MAX_BOOKS: "books <= maxbooks";
+        assert books != null ; 
     Set<String> seen = new HashSet<>();
        for(String b: books){
         assert b != null;
@@ -29,11 +36,13 @@ public class Boundedstack {
 
        }
     }
-    
-    /*public Boundedstack() {
+
+    //สร้างเพลย์ลิสต์ว่าง
+    public Boundedstack() {
         this.books = new ArrayList<>();
+        this.capacity = 200;
         checkRep();
-    }*/
+    }
     
     /**
      * 
@@ -42,20 +51,73 @@ public class Boundedstack {
      */
     public Boundedstack(int capacity){
         this.books = new ArrayList<>();
-        this.size = 150;
         this.capacity = capacity;
+        checkRep();
+
     }
+
     /**
-     * 
-     * @param book รหัสฟหนังสือ ต้องไม่เป็นnullและเป็นสตริงว่าง
+     * เพิ่มหนังสือที่ถูกคืนเข้ามา
+     * @param book รหัสหนังสือ ต้องไม่เป็นnullและเป็นสตริงว่าง
      * @return
      * @throws IllegalArgumentException ถ้าbookเป็นnullหรือสตริงว่าง
      */
-    public void add(String book){
+    public boolean add(String book){
      if(book == null) throw new IllegalArgumentException();
      if(book=="" )throw new IllegalArgumentException();
-
+     return false;
 
     }
 
+    /**
+     * ลบหนังสือที่ถูกยืมออกไป
+     * @param 
+     * @return
+     */
+    public boolean remove(String book){
+       return false;
+
+    }
+
+    /**
+     * ดูหนังสือที่ถูกคืนล่าสุด
+     * @param
+     * @return
+     */
+    public String peek() {
+     return null;
+    }
+    /**
+     * ตรวจว่ามีฟนังสือนี้อยู่ฟรือไม่
+     * @return
+     */
+    public boolean contains(String book){
+        return books.contains(book);
+    }
+
+    /**
+     * คืนจำนวนหนังสือ
+     * @return
+     */
+    public int size(){
+        return books.size();
+    }
+
+    /**
+     * คืนหนังสือทั้งหมด
+     * @return
+     */
+    public List<String> books(){
+        return new ArrayList<>(books);
+    }
+    
+    /**
+     * @return
+     */
+   /*  public Boundedstack shuffled(){
+        List<String> copy = new ArrayList<>(books);
+        Collections.shuffle(copy);
+        return new Boundedstack(copy);
+
+    }*/ 
 }
