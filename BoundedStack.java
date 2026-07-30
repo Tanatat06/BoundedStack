@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,30 +42,32 @@ public class BoundedStack {
         checkRep();
     }
     /** สร้างชั้นหนังสือที่เอาไว้เก็บbookID
-     * @param Ribary ชั้นหนังสือต้องไม่เกินความจุที่กำหนด
-     * @throws IllegalArgumentException ถ้าRibaryผิดเงื่อนไข
+     * @param Library ชั้นหนังสือต้องไม่เกินความจุที่กำหนด
+     * @throws IllegalArgumentException ถ้าLibraryผิดเงื่อนไข
      */
-    public BoundedStack(List<String> Ribary,int capacity){
-        if(Ribary == null)throw new IllegalArgumentException();
+    public BoundedStack(List<String> Library,int capacity){
+        if(Library == null)throw new IllegalArgumentException();
         if(capacity < 0)throw new IllegalArgumentException();
-        if(Ribary.size()>capacity)throw new IllegalArgumentException();
+        if(Library.size()>capacity)throw new IllegalArgumentException();
         Set<String>seen = new HashSet<>();
-        for(String b : Ribary){
+        for(String b : Library){
          if(b==null)throw new IllegalArgumentException();
          if(b.isEmpty())throw new IllegalArgumentException();
          if(!seen.add(b))throw new IllegalArgumentException();   
         }
         this.capacity = capacity;
-        this.bookID = new ArrayList<>(Ribary);
+        this.bookID = new ArrayList<>(Library);
         checkRep();
     }
+
     /**
+     * 
      * เพิ่มหนังสือใหม่และหนังสือที่ถูกยืมเข้ามา
      * @param book รหัสหนังสือ ต้องไม่เป็นnullและไม่เป็นสตริงว่าง
      * @return true ถ้าเพิ่มสำเร็จ, false ถ้ามีหนังสือนี้อยู่แล้วหรือเต็มแล้ว
      * @throws IllegalArgumentException ถ้าbookเป็นnullหรือสตริงว่าง
      */
-    public boolean Add(String book){
+    public boolean add(String book){
      if(book == null) throw new IllegalArgumentException();
      if(book.isEmpty())throw new IllegalArgumentException();
      if(bookID.contains(book)|| bookID.size()==capacity) return false;
@@ -78,7 +81,7 @@ public class BoundedStack {
      * @return trueถ้าลบ/ยืมหนังสือสำเร็จ,falseถ้าไม่พบหนังสือ
      * @throws IllegalArgumentException ถ้าbookเป็นnull
      */
-    public boolean Remove(String book){
+    public boolean remove(String book){
        if(book == null) throw new IllegalArgumentException();
        if(!bookID.contains(book)) return false;
        bookID.remove(book);
@@ -89,7 +92,7 @@ public class BoundedStack {
      * ดูหนังสือที่ล่าสุดที่ถูกเพิ่มมา
      * @return ส่งค่าหนังสือล่าสุดที่ถูกเพิ่ม
      */
-    public String LastestBook(){
+    public String latestBook(){
       return bookID.get(bookID.size()-1);
     }
     /**
@@ -107,6 +110,30 @@ public class BoundedStack {
         return bookID.size();
     }
     /**
+    * ตรวจว่าชั้นหนังสือว่างหรือไม่
+    * @return true ถ้าไม่มีหนังสืออยู่ในชั้นเลย, false ถ้ามีหนังสืออย่างน้อย 1 เล่ม
+    */
+    public boolean isEmpty(){
+        return bookID.isEmpty();
+    }
+    /**
+    * ตรวจว่าชั้นหนังสือเต็มความจุหรือยัง
+    * @return true ถ้าจำนวนหนังสือเท่ากับความจุสูงสุด, false ถ้ายังมีที่ว่าง
+    */
+    public boolean isFull(){
+        return bookID.size() == capacity;
+    }
+     /**
+    * สร้างชั้นหนังสือใหม่อีกชั้นนึงที่มีหนังสือเหมือนกันทุกเล่ม
+    * แต่ถ้าแก้ไขชั้นไหน อีกชั้นจะไม่เปลี่ยนตาม
+    * @return ชั้นหนังสือใหม่
+    */
+    public BoundedStack shuffled (){
+        List<String> copy =new ArrayList<>(bookID);
+        Collections.shuffle(copy);
+        return new BoundedStack(copy,capacity);
+    }
+    /**
      * คืนหนังสือทั้งหมด
      * @return ส่งค่าหนังสือทั้งหมด
      */
@@ -114,7 +141,7 @@ public class BoundedStack {
         return new ArrayList<>(bookID);
     }
    @Override
-public String toString(){
-    return bookID.toString();
-}
+    public String toString(){
+        return bookID.toString();
+    }
 }
