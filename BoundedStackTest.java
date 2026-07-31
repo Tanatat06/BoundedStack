@@ -35,13 +35,7 @@ public class BoundedStackTest {
         testCreators();
         testObservers();
         testProducer();
-        testExposure();
-        
-
-
-
-
-        
+        testExposure();    
     System.out.println("\n=== Summary ===");
     System.out.println("Passed: " + passed);
     System.out.println("Failed: " + failed);
@@ -55,42 +49,41 @@ public class BoundedStackTest {
     private static void  testCreators(){
         System.out.println("-- Creators --");
 
-        BoundedStack empty = new BoundedStack();//ต้องแก้
+        BoundedStack empty = new BoundedStack();
         check("new() -> empty", empty.size ()== 0);
         check("new() -> contains nothing",!empty.contains("anyting"));
 
-        BoundedStack b = new BoundedStack();//แก้
+        BoundedStack b = new BoundedStack(Arrays.asList("A"), 200);
         check( "new(list) -> size 1", b.size() == 1);
         check( "new(list) -> contains A", b.contains("A"));
 
         //ต้องเติม Boudary
-        BoundedStack formEmpty = new BoundedStack(); //แก่
-        check("new(empty list) -> empty",formEmpty.size() == 0);
+        BoundedStack formEmpty = new BoundedStack(new ArrayList<String>(), 200);
+        check("new(empty list) -> empty", formEmpty.size() == 0);
         // ถ้าinput ผิดเงื่อนไข่จะต้องโยน exception
         boolean threwDup = false;
         try{
-           new BoundedStack();
-        }catch (IllegalArgumentException e){
-            threwDup = true;
-        }check("new(duplicates) -> throws IllegalArgumentException", threwDup);
-        
-        boolean threwNull = false;
-        try {
-            new BoundedStack();
-        } catch (IllegalArgumentException e) {
-            threwNull = true;
-        }
-        check("new(list with null) -> throws IllegalArgumentException", threwNull);
-        boolean threwNullList = false;
-        try {
-            new BoundedStack();
-        } catch (IllegalArgumentException e) {
-            threwNullList = true;
-        }
-        check("new(null) -> IllegalArgumentException", threwNullList);
-        
-    } 
+            new BoundedStack(Arrays.asList("A","A"), 200);
+    }catch (IllegalArgumentException e){
+        threwDup = true;
+    }
+    check("new(duplicates) -> throws IllegalArgumentException", threwDup);
+    boolean threwNull = false;
+    try {
+        new BoundedStack(Arrays.asList("A", null), 200); 
+    }catch (IllegalArgumentException e) {
+        threwNull = true;
+    }
+    check("new(list with null) -> throws IllegalArgumentException", threwNull);
 
+    boolean threwNullList = false;
+    try {
+        new BoundedStack(null, 200); 
+    }catch (IllegalArgumentException e) {
+        threwNullList = true;
+    }
+        check("new(null) -> IllegalArgumentException", threwNullList);
+    } 
     //--- Mutator:add ป้องกันรหัสหนังสือซ้ำ ---
     private static void testAdd(){
         System.out.println("\n-- Add --");
@@ -100,8 +93,7 @@ public class BoundedStackTest {
         check("Add(A) -> size 1", s.size() == 1);
         check("Add(A) -> found by contains", s.contains("A"));
         
-
-        
+       
         //input ผิดเงื่อนไขจึง throws exception
         boolean threwEmpty = false;
         try {
@@ -112,56 +104,48 @@ public class BoundedStackTest {
 
         
     }
+    //--- Mutator:remove ป้องกันรหัสหนังสือซ้ำ ---
     private static void testRemove(){
         System.out.println("\n-- Remove --");
+        BoundedStack s = new BoundedStack(Arrays.asList("A", "B", "C"), 200);
+        check("remove(B) -> returns true", s.remove("B"));
+        check("remove -> size decreases", s.size() == 2 );
+        check("remove keeps the others in order",
+            s.books().equals(Arrays.asList("A", "C")));
         //ถ้าโดนยืมหนังสือ หนังสือในชั้นจะต้องลดลง
         //ถ้าหนังสือไม่มีในชั้นจะTure
         //หนังสือหายออกไปจากชั้น
-        //หนังสือชำรุด
     }
     private static void testLatestBook(){
-        System.out.println("\n--- LatestBook ---");
+        System.out.println("\n-- LatestBook --");
 
-        BoundedStack s = new BoundedStack();
-        check(null, false);
-
-
-        //
+        BoundedStack s = new BoundedStack(); 
+        
         
     }
     private static void testObservers(){
-        System.out.println("\n--- Observers ---");
+        System.out.println("\n-- Observers --");
 
         BoundedStack s = new BoundedStack(new ArrayList<String>(), 2);
         s.add("A");
         check("before filling to capacity -> isFull false", !s.isFull());
-
         s.add("B");
         check("after filling to capacity -> isFull true", s.isFull());
-
         check("Add when bookshelf full -> returns false", !s.add("one more"));
-        check("bookshelf is still full after failed add", s.isFull());
-        
-        //ถ้าชั้นหนังสือว่างเป็นtrue ไม่ว่างfalse
-        //BoundedStack s = new BoundedStack(new ArrayList<String>(),2);
-        //s.add("A");
-        //s.add("B");
-        //check("after filling to capacity -> isFull true", !s.isFull());
-        //check("after filling to capacity -> isFull true", s.isFull());
-        //check("Add when bookshelf full -> return false", s.add("one more"));
-        //check("bookshelf is still full after failed add",s.isFull()); 
-
-
+        check("bookshelf is still full after failed add", s.isFull()); 
     }
     private static void testProducer(){
-        System.out.println("\n--- Producer ---");
+        System.out.println("\n-- Producer --");
+
 
         
-
-
-
     }
     private static void testExposure(){
-        System.out.println("\n--- Exposure ---");
+        System.out.println("\n-- Exposure --");
+
+        BoundedStack s = new BoundedStack();
+        s.add("A");
+
+        
     }       
 }
