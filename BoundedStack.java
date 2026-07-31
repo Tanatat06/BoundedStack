@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 /**
  * BoundedStack คือ ADTแทนชั้นหนังสือที่บรรณารักษ์ใช้บันทึกการยืมและคืนหนังสือ
+ * นาย
+ * น.ส.
  */
 public class BoundedStack {  
     private final List<String> bookID; // private final String book ;
@@ -47,7 +49,7 @@ public class BoundedStack {
      */
     public BoundedStack(List<String> Library,int capacity){
         if(Library == null)throw new IllegalArgumentException();
-        if(capacity < 0)throw new IllegalArgumentException();
+        if(capacity < 0)throw new IllegalArgumentException("capacity must be positive.");
         if(Library.size()>capacity)throw new IllegalArgumentException();
         Set<String>seen = new HashSet<>();
         for(String b : Library){
@@ -59,12 +61,14 @@ public class BoundedStack {
         this.bookID = new ArrayList<>(Library);
         checkRep();
     }
-
+    //เรียก Contructor อีกตัวความจุเริ่มต้น200
+    public BoundedStack(List<String>Library){
+        this(Library,200);
+    }
     /**
-     * 
-     * เพิ่มหนังสือใหม่และหนังสือที่ถูกยืมเข้ามา
+     * คืนหนังสือและเพิ่มหนังสือใหม่
      * @param book รหัสหนังสือ ต้องไม่เป็นnullและไม่เป็นสตริงว่าง
-     * @return true ถ้าเพิ่มสำเร็จ, false ถ้ามีหนังสือนี้อยู่แล้วหรือเต็มแล้ว
+     * @return true ถ้าคืน/เพิ่มสำเร็จ, false ถ้ามีหนังสือนี้อยู่แล้วหรือเต็มแล้ว
      * @throws IllegalArgumentException ถ้าbookเป็นnullหรือสตริงว่าง
      */
     public boolean add(String book){
@@ -104,10 +108,17 @@ public class BoundedStack {
     }
     /**
      * คืนจำนวนหนังสือ
-     * @return ส่งค่าจำนวนหนังสือกลับไป
+     * @return ส่งค่าจำนวนหนังสือ
      */
     public int size(){
         return bookID.size();
+    }
+    /**
+     * คืนค่าความจุสูงสุด
+     * @return capacity
+     */
+    public int Capacity(){
+         return capacity;
     }
     /**
     * ตรวจว่าชั้นหนังสือว่างหรือไม่
@@ -123,6 +134,13 @@ public class BoundedStack {
     public boolean isFull(){
         return bookID.size() == capacity;
     }
+    /**
+     * คืนหนังสือทั้งหมด
+     * @return ส่งค่าหนังสือทั้งหมด
+     */
+    public List<String> bookID(){
+        return new ArrayList<>(bookID);
+    }
      /**
     * สร้างชั้นหนังสือใหม่อีกชั้นนึงที่มีหนังสือเหมือนกันทุกเล่ม
     * แต่ถ้าแก้ไขชั้นไหน อีกชั้นจะไม่เปลี่ยนตาม
@@ -132,13 +150,6 @@ public class BoundedStack {
         List<String> copy =new ArrayList<>(bookID);
         Collections.shuffle(copy);
         return new BoundedStack(copy,capacity);
-    }
-    /**
-     * คืนหนังสือทั้งหมด
-     * @return ส่งค่าหนังสือทั้งหมด
-     */
-    public List<String> books(){
-        return new ArrayList<>(bookID);
     }
    @Override
     public String toString(){
