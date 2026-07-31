@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Set;
 /**
  * BoundedStack คือ ADTแทนชั้นหนังสือที่บรรณารักษ์ใช้บันทึกการยืมและคืนหนังสือ
- * นาย
- * น.ส.
+ * นายธนทัต สนนาค 6821651299 sec801
+ * น.ส.ธมลวรรณ กลักเพชร 6821651353 sec 801
  */
 public class BoundedStack {  
     private final List<String> bookID; // private final String book ;
@@ -15,7 +15,6 @@ public class BoundedStack {
     // bookID แทนชั้นหนังสือที่เก็บรหัสหนังสือ "A100","A101"...
     // ลำดับใน List แทนลำดับการเพิ่มหนังสือ
     // หนังสือที่อยู่ตำแหน่งสุดท้ายคือหนังสือที่ถูกเพิ่มล่าสุด
-    
     // Representation Invariant:
     //-ต้องมีรายหนังสืออยู่จริง (ไม่เป็น 'null')
     //-ไม่มีหนังสือไหนเป็น 'null'
@@ -117,7 +116,7 @@ public class BoundedStack {
      * คืนค่าความจุสูงสุด
      * @return capacity
      */
-    public int Capacity(){
+    public int capacity(){
          return capacity;
     }
     /**
